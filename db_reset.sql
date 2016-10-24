@@ -4,3 +4,4 @@
 DROP DATABASE IF EXISTS ehr_mu;
 CREATE DATABASE ehr_mu;
 \c ehr_mu
+\q
