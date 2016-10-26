@@ -7,10 +7,29 @@ Usage:
 Note: Make sure you've run db_reset.sql first
 """
 
-import psycopg2
+import requests
+# Although not needed explicitly, import works to check early that psycopg2 is
+# installed. Needed to connect to a postgres db
+import psycopg2 
 import pandas as pd
 from sqlalchemy import create_engine
 from getpass import getuser
+
+
+def dl_csv():
+    """Download the source csv, chunk-by-chunk
+    Chunk strategy from:
+    http://stackoverflow.com/questions/16694907/how-to-download-large-file-in-python-with-requests-py
+    """
+    url = "http://dashboard.healthit.gov/datadashboard/data/MU_REPORT_2015.csv"
+    local_filename = url.split('/')[-1]
+    r = requests.get(url, stream=True)
+    with open(local_filename, 'wb') as f:
+        for i, chunk in enumerate(r.iter_content(chunk_size=1024)): 
+            if chunk: # filter out keep-alive new chunks
+                f.write(chunk)
+            print("Chunk {} written to local disk".format(i))
+    return local_filename
 
 
 def load_from_csv(fn='MU_REPORT_2015.csv'):
@@ -33,4 +52,4 @@ def load_from_csv(fn='MU_REPORT_2015.csv'):
 # TODO: add some tests or asserts to see how this process went
 
 if __name__ == '__main__':
-    load_from_csv()
+    load_from_csv(dl_csv())
