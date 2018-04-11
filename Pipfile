@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[dev-packages]
+pytest = "*"
+jupyterlab = "*"
+
+[packages]
+numpy = "*"
+scipy = "*"
+pandas = "*"
+jupyter = "*"
+seaborn = "*"
+datadotworld = "*"
+
+[requires]
+python_version = "3.6"
